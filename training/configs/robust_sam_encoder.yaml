@@ -1,0 +1,28 @@
+MODEL:
+  TYPE: tiny_vit
+  PRETRAINED: weights/tinyvit-5m.pth
+
+TRAIN:
+  EPOCHS: 120
+  BASE_LR: 5.0e-4
+  WARMUP_EPOCHS: 12
+  WEIGHT_DECAY: 0.05
+  FIND_UNUSED_PARAMETERS: False
+
+DATA:
+  IMG_SIZE: 1024
+  MEAN_AND_STD_TYPE: default
+  DATASET: robust-seg
+  DATA_PATH: datasets/train
+
+SAVE_FREQ: 10
+
+
+DISTILL:
+  EMBED_DIM: 256
+  TEACHER_EMBED_PATH: teacher_embeddings/robust_seg
+  NO_RAND: True
+  PIXEL_WISE: 1.0
+  MID_PIXEL_WISE: 0.2
+
+AMP_ENABLE: False

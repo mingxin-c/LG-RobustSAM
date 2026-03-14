@@ -1,0 +1,13 @@
+numpy==1.23.5
+scipy==1.10.1
+scikit-image==0.20.0
+opencv-python
+timm>=0.6.12
+mmengine>=0.6.0
+einops>=0.6.0
+pyyaml>=6.0
+matplotlib>=3.5
+loguru>=0.6.0
+tqdm
+tensorboard
+albumentations

@@ -1,0 +1,26 @@
+# RobustSAM教师特征预保存配置
+# 完全基于EdgeSAM的配置结构
+
+MODEL:
+  NAME: robustsam_vit_h
+  TYPE: robustsam_vit_h
+
+TRAIN:
+  EPOCHS: 1
+
+DATA:
+  IMG_SIZE: 1024
+  MEAN_AND_STD_TYPE: default
+  DATASET: robust_seg
+  DATA_PATH: datasets/train  # 修正为实际的训练数据路径
+
+DISTILL:
+  EMBED_DIM: 256
+  SAVE_TEACHER_EMBED: True
+  TEACHER_EMBED_PATH: teacher_embeddings/robust_seg/
+
+# 进度报告频率
+PRINT_FREQ: 50
+
+# 混合精度
+AMP_ENABLE: False

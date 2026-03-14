@@ -1,0 +1,61 @@
+MODEL:
+  TYPE: tiny_vit
+  PRETRAINED: output/stage1_encoder_only/robust_sam_encoder/default/ckpt_epoch_20.pth
+
+TRAIN:
+  EPOCHS: 40
+  BASE_LR: 4.0e-4
+  MIN_LR: 4.0e-5
+  WARMUP_LR: 4.0e-6
+  WARMUP_EPOCHS: 1
+  WEIGHT_DECAY: 0.05
+  CLIP_GRAD: 0.01
+
+DATA:
+  IMG_SIZE: 1024
+  MEAN_AND_STD_TYPE: default
+  DATASET: robust-seg
+  DATA_PATH: datasets/train
+  NUM_WORKERS: 4
+  BATCH_SIZE: 4
+
+SAVE_FREQ: 10
+
+
+DISTILL:
+  EMBED_DIM: 256
+  TEACHER_EMBED_PATH: teacher_embeddings/robust_seg
+  NO_RAND: True
+  ENCODER_ONLY: False
+  # 迭代处采用 学生↔教师 的分割蒸馏（主导权重）
+  DECODER_BCE: 3.0
+  DECODER_DICE: 5.0
+  MAX_ALLOWED_PROMPTS: 16
+  PROMPT_TYPE: ['box', 'point']  # EdgeSAM顺序
+  DECODE_ITERS: 2               # EdgeSAM设置
+  POINTS_PER_REFINE_ITER: 1     # EdgeSAM设置
+  ITER_ON_BOX: True            # EdgeSAM设置
+  MULTIMASK_OUTPUT: 3          # 与AOTG/AMFG形状保持一致
+
+  # 若仍希望使用点提示，请基于真实掩码采样点
+  PROMPT_MASK_TO_POINT: True
+
+  # 迭代蒸馏使用教师 logits 作为软目标
+  USE_TEACHER_LOGITS: True
+  TEMPERATURE: 1.5
+
+  # RobustSAM风格一致性损失：适度抬权，避免被解码器损失淹没
+  # L_MFC: 掩码特征一致性 (upscaled_embedding_robust)
+  ROBUST_MFC_DECODER: 1.0
+  # L_TC: Token一致性 (mask_tokens_out)
+  ROBUST_TC_QUERY: 0.5
+  # L_Seg: 分割监督改为学生 vs GT（权重可按需调整）
+  ROBUST_SEG_DICE: 1.0
+  ROBUST_SEG_FOCAL: 0.5
+
+  # 关闭 logits 级分割与平滑正则，避免与两类分割损失重复
+  LOGITS_SEG_LOSS: 0.0
+  LOGITS_TV: 0.0
+  LOGITS_LAP: 0.0
+
+AMP_ENABLE: False
