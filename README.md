@@ -41,6 +41,9 @@ pip install -r requirements.txt
 ```bash
 pip install -r requirements.txt
 ```
+## weights
+
+Pretrained weights: https://huggingface.co/wswllp/LG-RobustSAM-weights
 
 ## Demo
 
